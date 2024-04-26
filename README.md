@@ -4,6 +4,7 @@ _**DO NOT USE OR MODIFY THIS SCRIPT TO CAUSE ANY HARM TO YOUR SYSTEMS OR A THIRD
 USE THIS SCRIPT ONLY FOR TESTING OR EDUCATING PURPOSES \
 HE AUTHOR IS NOT RESPONSIBLE FOR ANY MALFUNCTION OR DAMAGE CAUSED**_
 
+<img src="images/readme_image_1.png" alt="Readme code 1" width="30%" height="30%"> <img src="images/readme_image_2.png" alt="Readme code 1" width="30%" height="30%">
 
 ## DESCRIPTION
 Script to simulate a ransomware file activity. This script performs the following:
