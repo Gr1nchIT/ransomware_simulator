@@ -28,4 +28,5 @@ https://unsplash.com/@alvannee_
 
 
 ## UPDATES
-(none)
+1. Microsoft Ransomware Protection notification \
+   <img src="images/ms_ransomware_protection_event.png" alt="MS ransomware protection notification1" width="50%" height="50%">
