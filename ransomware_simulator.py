@@ -20,13 +20,13 @@ print("\n")
 #-------------> ADJUST THIS DATA <-------------
 # |      |       |       |       |       |
 # \/     \/      \/      \/      \/      \/
-parentPath=r"ADD_PATH_HERE"
-folderName=r"GRINCHIT"
+parentPath=r""
+folderName=r""
 # /\    /\      /\      /\      /\      /\
 # |     |       |       |       |       |
 
 
-if folderName=="GRINCHIT":
+if (folderName=="" or parentPath==""):
     print(">> Review the parentPath and folderName attributes and try again.")
     print(">> Quiting the script....bye bye....")
     print("\n")
@@ -65,12 +65,17 @@ def randomTextFiles(numberoffiles, filetype):
     randomText=""
     filesCounter=0
     for numberTextFiles in range(1,numberoffiles+1):
-        for textLength in range(20,100): #Create random words
-            randomChrLen=random.randint(2,10)
-            letters = string.ascii_letters
-            randomWord=(''.join(random.choice(letters) for i in range(randomChrLen)) )
-            #print("Random word:",randomWord)
-            randomText=randomText + " " + randomWord #Create text of the random words
+        
+        #Create random text based on sample text
+        textLength=random.randint(200,5000)
+        textCounter=0
+        text=""
+        while textCounter<textLength:
+            with open("text.txt", "r") as file: 
+                allText = file.read() 
+                words = list(map(str, allText.split())) 
+            randomText+=random.choice(words) + " "
+            textCounter+=1
 
         n = 5 #Size of randomly created ID
         randomTextID=(''.join(["{}".format(random.randint(0, 9)) for num in range(0, n)]))
@@ -125,14 +130,18 @@ def renameFileExtension():
         fileFullPath=os.path.join(folderFullPath,fileName)
         newFileName=fileName.split(".")[0] + fileExtension
         newFileFullPath=os.path.join(folderFullPath,newFileName)
-        os.rename(fileFullPath, newFileFullPath)
-        fileCounter=fileCounter+1
+        #Exception if file extension already modified
+        try:
+            os.rename(fileFullPath, newFileFullPath)
+            fileCounter=fileCounter+1
+        except:
+            print (f"File {fileName} renamed already! Skipping...")
     print(f"Total files extension changed: {fileCounter}")
 #END renameFileExtension
 #_________________________________________________________________________________________________
 
 
-#START renameFileExtension
+#START encryptFiles
 def encryptFiles():
     # key generation
     key = Fernet.generate_key()
@@ -169,25 +178,58 @@ def encryptFiles():
 
     print(f"Total files encrypted: {fileCounter}")
 
-#END renameFileExtension
+#END encryptFiles
 #_________________________________________________________________________________________________
 
 
 #******************************************************
-#Adjust this if needed
-print(">> Creating files....")
-randomTextFiles(50,"docx")
-randomTextFiles(50,"doc")
-randomTextFiles(50,"txt")
-randomPicFiles(50,"jpg")
-randomPicFiles(50,"png")
-print(">> Files created!")         
-input("Click any button to encrypt all files....")
-encryptFiles()
-print(">> Files ecnrypted!")   
-input("Click any button to change file extension....") 
-renameFileExtension()
-print(">> Files extension changed!")  
+print("\n\n")
+# CREATE RANDOM FILES
+askUser=""
+askUser=input("Do you want to create random files? (Y/N): ")
+if (askUser.lower()=="y" or askUser.lower()=="yes"):
+    try:
+        numberOfFiles_DOC=int(input("How many doc files? "))
+        numberOfFiles_TXT=int(input("How many txt files? "))
+        numberOfFiles_JPG=int(input("How many JPG files? "))
+        numberOfFiles_PNG=int(input("How many PNG files? "))
+    except:
+        print ("An error occured. Enter only integer as answers. Exiting....")
+        exit()
+    print(f"I am going to create: \n\t- {numberOfFiles_DOC} doc files, \n\t- {numberOfFiles_TXT} txt files, \n\t- {numberOfFiles_JPG} jpg files, \n\t- {numberOfFiles_PNG} png files")
+    input("Press any button to continue....")
+    print(">> Creating files....")
+    #randomTextFiles(10,"docx")
+    randomTextFiles(numberOfFiles_DOC,"doc")
+    randomTextFiles(numberOfFiles_TXT,"txt")
+    randomPicFiles(numberOfFiles_JPG,"jpg")
+    randomPicFiles(numberOfFiles_PNG,"png")
+    print(">> Files created!") 
+else:
+    print (f"You answered: {askUser}. Skipping this step....")        
 
+print("\n\n")
+
+# ENCRYPT FILES
+askUser=""
+askUser=input("Do you want to encrypt the files? (Y/N): ")
+if (askUser.lower()=="y" or askUser.lower()=="yes"):
+    encryptFiles()
+    print(">> Files ecnrypted!")
+else:
+    print (f"You answered: {askUser}. Skipping this step....")    
+
+print("\n\n")
+
+# MODIFY FILE EXTENSION
+askUser=""
+askUser=input("Do you want to modify the extension of the files? (Y/N): ")
+if (askUser.lower()=="y" or askUser.lower()=="yes"):
+    renameFileExtension()
+    print(">> Files extension changed!")  
+else:
+    print (f"You answered: {askUser}. Skipping this step....")   
+
+print("\n\n")
 
 #******************************************************
